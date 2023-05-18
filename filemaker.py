@@ -106,10 +106,12 @@ def java(path: Path) -> None:
 if __name__ == "__main__":
     today = date.today()
 
-    main_path = Path.home() / "Desktop"
+    main_path = Path.cwd()
     filepath: Path
 
     valid_choices = {1, 2, 3, 4}
+
+    print(f"Current Directory: {main_path}\n")
 
     while True:
         print(
