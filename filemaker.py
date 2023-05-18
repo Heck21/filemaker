@@ -34,13 +34,17 @@ def file_check(filepath: Path) -> Path:
             return filepath
 
 
-def create_python_file(filepath: Path, today: date) -> None:
+def create_python_file(
+    filepath: Path, today: date, name: str = "", id_num: str = ""
+) -> None:
     """
     Creates Python file with initial docstring.
 
     Parameters:
         filepath: Path to file.
         today: Date object.
+        name: Name used in docstring. Default: ""
+        id_num: ID number used in docstring. Default ""
 
     Returns:
         Nothing
@@ -52,8 +56,8 @@ def create_python_file(filepath: Path, today: date) -> None:
     with filepath.open("w") as f:
         f.write(
             "'''"
-            "\nAuthor: Cavin Warren"
-            "\nID#: 1908573"
+            f"\nAuthor: {name}"
+            f"\nID#: {id_num}"
             f"\nDate: {today:%B %d, %Y}"
             "\nDescription: Python code for [PLACEHOLDER]"
             "\n'''"
@@ -61,13 +65,14 @@ def create_python_file(filepath: Path, today: date) -> None:
         )
 
 
-def create_latex_file(filepath: Path, today: date) -> None:
+def create_latex_file(filepath: Path, today: date, name: str = "") -> None:
     """
     Creates LaTeX file with initial boilerplate code.
 
     Parameters:
         filepath: Path to file.
         today: Date object.
+        name: Name used for author on title page. Default: ""
 
     Returns:
         Nothing
@@ -94,7 +99,7 @@ def create_latex_file(filepath: Path, today: date) -> None:
             "\n\\newtheorem*{example}{Example}"
             "\n\\newtheorem*{definition}{Definition}"
             f"\n\n\\title{{\\Huge {title}}}"
-            "\n\\author{\\huge Cavin Warren}"
+            f"\n\\author{{\\huge {name}}}"
             f"\n\\date{{\\large {today:%B %d, %Y}}}"
             "\n\n\\begin{document}"
             "\n\n\\maketitle"
@@ -105,13 +110,17 @@ def create_latex_file(filepath: Path, today: date) -> None:
         )
 
 
-def create_cpp_file(filepath: Path, today: date) -> None:
+def create_cpp_file(
+    filepath: Path, today: date, name: str = "", id_num: str = ""
+) -> None:
     """
     Creates C++ file with initial document block.
 
     Parameters:
         filepath: Path to file.
         today: Date object.
+        name: Name used in document block. Default: ""
+        id_num: ID number used in document block. Default ""
 
     Returns:
         Nothing
@@ -123,8 +132,8 @@ def create_cpp_file(filepath: Path, today: date) -> None:
     with filepath.open("w") as f:
         f.write(
             "/*"
-            "\nAuthor: Cavin Warren"
-            "\nID#: 1908573"
+            f"\nAuthor: {name}"
+            f"\nID#: {id_num}"
             f"\nDate: {today:%B %d, %Y}"
             "\nDescription: C++ code for [PLACEHOLDER]"
             "\n*/"
@@ -132,13 +141,17 @@ def create_cpp_file(filepath: Path, today: date) -> None:
         )
 
 
-def create_java_file(filepath: Path, today: date) -> None:
+def create_java_file(
+    filepath: Path, today: date, name: str = "", id_num: str = ""
+) -> None:
     """
     Creates Java file with initial document block.
 
     Parameters:
         filepath: Path to file.
         today: Date object.
+        name: Name used in document block. Default: ""
+        id_num: ID number used in document block. Default ""
 
     Returns:
         Nothing
@@ -150,8 +163,8 @@ def create_java_file(filepath: Path, today: date) -> None:
     with filepath.open("w") as f:
         f.write(
             "/*"
-            "\nAuthor: Cavin Warren"
-            "\nID#: 1908573"
+            f"\nAuthor: {name}"
+            f"\nID#: {id_num}"
             f"\nDate: {today:%B %d, %Y}"
             "\nDescription: Java code for [PLACEHOLDER]"
             "\n*/"
@@ -164,6 +177,9 @@ def main() -> None:
 
     today = date.today()
     filepath: Path
+
+    name: str = ""
+    id_num: str = ""
 
     valid_choices = {1, 2, 3, 4}
 
@@ -201,13 +217,13 @@ def main() -> None:
 
         match choice:
             case 1:
-                create_python_file(filepath, today)
+                create_python_file(filepath, today, name, id_num)
             case 2:
-                create_latex_file(filepath, today)
+                create_latex_file(filepath, today, name)
             case 3:
-                create_cpp_file(filepath, today)
+                create_cpp_file(filepath, today, name, id_num)
             case 4:
-                create_java_file(filepath, today)
+                create_java_file(filepath, today, name, id_num)
 
         print("\nFile has successfully been created.")
 
