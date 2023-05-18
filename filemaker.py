@@ -4,6 +4,18 @@ from getpass import getpass
 
 
 def file_check(filepath: Path) -> Path:
+    """
+    Checks if path to file already exists, allows creation of new path.
+
+    Parameters:
+        filepath: Path to file.
+
+    Returns:
+        The original path if it does not already exist.
+
+        The altered path if the original path already exists.
+    """
+
     while True:
         if filepath.exists():
             print(f"\n{filepath} already exists.")
@@ -23,6 +35,17 @@ def file_check(filepath: Path) -> Path:
 
 
 def create_python_file(filepath: Path, today: date) -> None:
+    """
+    Creates Python file with initial docstring.
+
+    Parameters:
+        filepath: Path to file.
+        today: Date object.
+
+    Returns:
+        Nothing
+    """
+
     filepath = filepath.with_suffix(".py")
     filepath = file_check(filepath)
 
@@ -39,6 +62,17 @@ def create_python_file(filepath: Path, today: date) -> None:
 
 
 def create_latex_file(filepath: Path, today: date) -> None:
+    """
+    Creates LaTeX file with initial boilerplate code.
+
+    Parameters:
+        filepath: Path to file.
+        today: Date object.
+
+    Returns:
+        Nothing
+    """
+
     filepath = filepath.with_suffix(".tex")
     filepath = file_check(filepath)
 
@@ -72,6 +106,17 @@ def create_latex_file(filepath: Path, today: date) -> None:
 
 
 def create_cpp_file(filepath: Path, today: date) -> None:
+    """
+    Creates C++ file with initial document block.
+
+    Parameters:
+        filepath: Path to file.
+        today: Date object.
+
+    Returns:
+        Nothing
+    """
+
     filepath = filepath.with_suffix(".cpp")
     filepath = file_check(filepath)
 
@@ -88,6 +133,17 @@ def create_cpp_file(filepath: Path, today: date) -> None:
 
 
 def create_java_file(filepath: Path, today: date) -> None:
+    """
+    Creates Java file with initial document block.
+
+    Parameters:
+        filepath: Path to file.
+        today: Date object.
+
+    Returns:
+        Nothing
+    """
+
     filepath = filepath.with_suffix(".java")
     filepath = file_check(filepath)
 
@@ -104,6 +160,8 @@ def create_java_file(filepath: Path, today: date) -> None:
 
 
 def main() -> None:
+    """Main Function"""
+
     today = date.today()
     filepath: Path
 
