@@ -34,7 +34,7 @@ def create_python_file(filepath: Path, today: date) -> None:
             f"\nDate: {today:%B %d, %Y}"
             "\nDescription: Python code for [PLACEHOLDER]"
             "\n'''"
-            "\n\n"
+            "\n\n\n"
         )
 
 
@@ -55,12 +55,7 @@ def create_latex_file(filepath: Path, today: date) -> None:
             "\\documentclass[12pt]{article}"
             "\n\\usepackage{amsmath, amsfonts, amsthm, amssymb}"
             "\n\\usepackage{fancyvrb, tcolorbox, geometry, graphicx}"
-            "\n\n\\newgeometry{"
-            "\n    top=1in,"
-            "\n    bottom=1in,"
-            "\n    outer=1in,"
-            "\n    inner=1in"
-            "\n}"
+            "\n\n\\newgeometry{top=1in, bottom=1in, outer=1in, inner=1in}"
             "\n\n\\theoremstyle{definition}"
             "\n\\newtheorem*{example}{Example}"
             "\n\\newtheorem*{definition}{Definition}"
