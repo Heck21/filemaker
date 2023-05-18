@@ -1,30 +1,32 @@
 from datetime import date
 from pathlib import Path
-import os
+from getpass import getpass
 
 
-def file_check(path: Path) -> Path:
+def file_check(filepath: Path) -> Path:
     while True:
-        if path.exists():
-            print(f"{path} already exists.")
+        if filepath.exists():
+            print(f"\n{filepath} already exists.")
 
             while True:
-                new_name = input("Enter a new file name: ")
+                new_name = input(">>> Enter a new file name: ")
 
                 if len(new_name) < 1:
                     print("Filename should not be blank.")
                 else:
                     break
 
-            path = Path(str(path).replace(path.stem, new_name))
+            suffix = filepath.suffix
+            filepath = Path.cwd() / f"{new_name}{suffix}"
         else:
-            return path
+            return filepath
 
 
-def python(path: Path) -> None:
-    path = file_check(path)
+def create_python_file(filepath: Path, today: date) -> None:
+    filepath = filepath.with_suffix(".py")
+    filepath = file_check(filepath)
 
-    with path.open("w") as f:
+    with filepath.open("w") as f:
         f.write(
             "'''"
             "\nAuthor: Cavin Warren"
@@ -36,8 +38,9 @@ def python(path: Path) -> None:
         )
 
 
-def latex(path: Path) -> None:
-    path = file_check(path)
+def create_latex_file(filepath: Path, today: date) -> None:
+    filepath = filepath.with_suffix(".tex")
+    filepath = file_check(filepath)
 
     while True:
         title = input(">>> Enter desired title: ")
@@ -47,7 +50,7 @@ def latex(path: Path) -> None:
         else:
             break
 
-    with path.open("w") as f:
+    with filepath.open("w") as f:
         f.write(
             "\\documentclass[12pt]{article}"
             "\n\\usepackage{amsmath, amsfonts, amsthm, amssymb}"
@@ -73,10 +76,11 @@ def latex(path: Path) -> None:
         )
 
 
-def cpp(path: Path) -> None:
-    path = file_check(path)
+def create_cpp_file(filepath: Path, today: date) -> None:
+    filepath = filepath.with_suffix(".cpp")
+    filepath = file_check(filepath)
 
-    with path.open("w") as f:
+    with filepath.open("w") as f:
         f.write(
             "/*"
             "\nAuthor: Cavin Warren"
@@ -88,10 +92,11 @@ def cpp(path: Path) -> None:
         )
 
 
-def java(path: Path) -> None:
-    path = file_check(path)
+def create_java_file(filepath: Path, today: date) -> None:
+    filepath = filepath.with_suffix(".java")
+    filepath = file_check(filepath)
 
-    with path.open("w") as f:
+    with filepath.open("w") as f:
         f.write(
             "/*"
             "\nAuthor: Cavin Warren"
@@ -103,19 +108,17 @@ def java(path: Path) -> None:
         )
 
 
-if __name__ == "__main__":
+def main() -> None:
     today = date.today()
-
-    main_path = Path.cwd()
     filepath: Path
 
     valid_choices = {1, 2, 3, 4}
 
-    print(f"Current Directory: {main_path}\n")
+    print(f"Current Directory: {Path.cwd()}\n", end="")
 
     while True:
         print(
-            "CHOOSE DESIRED FILE TYPE:\n"
+            "\nCHOOSE DESIRED FILE TYPE:\n"
             "1. Python\n"
             "2. LaTeX\n"
             "3. C++\n"
@@ -134,28 +137,24 @@ if __name__ == "__main__":
                     break
 
         while True:
-            filename = input(">>> Enter desired filename: ")
+            filename = input("\n>>> Enter desired filename: ")
 
             if len(filename) < 1:
                 print("Filename should not be blank.")
             else:
                 break
 
-        filepath = main_path / f"{filename}"
+        filepath = Path.cwd() / f"{filename}"
 
         match choice:
             case 1:
-                filepath = filepath.with_suffix(".py")
-                python(filepath)
+                create_python_file(filepath, today)
             case 2:
-                filepath = filepath.with_suffix(".tex")
-                latex(filepath)
+                create_latex_file(filepath, today)
             case 3:
-                filepath = filepath.with_suffix(".cpp")
-                cpp(filepath)
+                create_cpp_file(filepath, today)
             case 4:
-                filepath = filepath.with_suffix(".java")
-                java(filepath)
+                create_java_file(filepath, today)
 
         print("\nFile has successfully been created.")
 
@@ -167,10 +166,14 @@ if __name__ == "__main__":
             else:
                 break
 
-        if repeat == "Y":
-            print("\n", end="")
-        else:
-            print("\n", end="")
+        if repeat == "N":
             break
 
-    os.system("pause")
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        exit(code="\nExiting...")
+    else:
+        getpass("\nPress ENTER to exit...")
