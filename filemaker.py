@@ -1,11 +1,12 @@
 from datetime import date
+from pathlib import Path
 import os
 
 
-def file_check(path: str) -> str:
+def file_check(path: Path) -> Path:
     while True:
-        if os.path.exists(path):
-            print("That file already exists.")
+        if path.exists():
+            print(f"{path} already exists.")
 
             while True:
                 new_name = input("Enter a new file name: ")
@@ -15,43 +16,27 @@ def file_check(path: str) -> str:
                 else:
                     break
 
-            path = path[: (path.rfind("\\") + 1)] + new_name + path[path.rfind(".") :]
+            path = Path(str(path).replace(path.stem, new_name))
         else:
             return path
 
 
-def c_schoolwork(path: str) -> None:
+def python(path: Path) -> None:
     path = file_check(path)
 
-    with open(path, "w") as f:
-        f.write("/*")
-        f.write("\nAuthor: Cavin Warren")
-        f.write("\nID#: 1908573")
-        f.write(f"\nDate: {today:%B %d, %Y}")
-        f.write("\nDescription: C code for [PLACEHOLDER]")
-        f.write("\n*DESC*")
-        f.write("\n*/")
-        f.write("\n\n#include <stdio.h>")
-        f.write("\n\nint main() {")
-        f.write("\n\n\n    return 0;")
-        f.write("\n}")
+    with path.open("w") as f:
+        f.write(
+            "'''"
+            "\nAuthor: Cavin Warren"
+            "\nID#: 1908573"
+            f"\nDate: {today:%B %d, %Y}"
+            "\nDescription: Python code for [PLACEHOLDER]"
+            "\n'''"
+            "\n\n"
+        )
 
 
-def python(path: str) -> None:
-    path = file_check(path)
-
-    with open(path, "w") as f:
-        f.write("'''")
-        f.write("\nAuthor: Cavin Warren")
-        f.write("\nID#: 1908573")
-        f.write(f"\nDate: {today:%B %d, %Y}")
-        f.write(f"\nDescription: Python code for [PLACEHOLDER]")
-        f.write("\n*DESC*")
-        f.write("\n'''")
-        f.write("\n\n")
-
-
-def latex(path: str) -> None:
+def latex(path: Path) -> None:
     path = file_check(path)
 
     while True:
@@ -62,41 +47,77 @@ def latex(path: str) -> None:
         else:
             break
 
-    with open(path, "w") as f:
-        f.write("\\documentclass[12pt]{article}")
-        f.write("\n\\usepackage{amsmath, amsfonts, amsthm, amssymb}")
-        f.write("\n\\usepackage{fancyvrb, tcolorbox, geometry, graphicx}")
-        f.write("\n\n\\newgeometry{")
-        f.write("\n    top=1in,")
-        f.write("\n    bottom=1in,")
-        f.write("\n    outer=1in,")
-        f.write("\n    inner=1in")
-        f.write("\n}")
-        f.write("\n\n\\theoremstyle{definition}")
-        f.write("\n\\newtheorem*{example}{Example}")
-        f.write("\n\\newtheorem*{definition}{Definition}")
-        f.write(f"\n\n\\title{{\\Huge {title}}}")
-        f.write("\n\\author{\\huge Cavin Warren}")
-        f.write(f"\n\\date{{\\large {today:%B %d, %Y}}}")
-        f.write("\n\n\\begin{document}")
-        f.write("\n\n\\maketitle")
-        f.write("\n\\pagenumbering{gobble}")
-        f.write("\n\\newpage")
-        f.write("\n\\pagenumbering{arabic}")
-        f.write("\n\n\n\n\\end{document}")
+    with path.open("w") as f:
+        f.write(
+            "\\documentclass[12pt]{article}"
+            "\n\\usepackage{amsmath, amsfonts, amsthm, amssymb}"
+            "\n\\usepackage{fancyvrb, tcolorbox, geometry, graphicx}"
+            "\n\n\\newgeometry{"
+            "\n    top=1in,"
+            "\n    bottom=1in,"
+            "\n    outer=1in,"
+            "\n    inner=1in"
+            "\n}"
+            "\n\n\\theoremstyle{definition}"
+            "\n\\newtheorem*{example}{Example}"
+            "\n\\newtheorem*{definition}{Definition}"
+            f"\n\n\\title{{\\Huge {title}}}"
+            "\n\\author{\\huge Cavin Warren}"
+            f"\n\\date{{\\large {today:%B %d, %Y}}}"
+            "\n\n\\begin{document}"
+            "\n\n\\maketitle"
+            "\n\\pagenumbering{gobble}"
+            "\n\\newpage"
+            "\n\\pagenumbering{arabic}"
+            "\n\n\n\n\\end{document}"
+        )
+
+
+def cpp(path: Path) -> None:
+    path = file_check(path)
+
+    with path.open("w") as f:
+        f.write(
+            "/*"
+            "\nAuthor: Cavin Warren"
+            "\nID#: 1908573"
+            f"\nDate: {today:%B %d, %Y}"
+            "\nDescription: C++ code for [PLACEHOLDER]"
+            "\n*/"
+            "\n\n"
+        )
+
+
+def java(path: Path) -> None:
+    path = file_check(path)
+
+    with path.open("w") as f:
+        f.write(
+            "/*"
+            "\nAuthor: Cavin Warren"
+            "\nID#: 1908573"
+            f"\nDate: {today:%B %d, %Y}"
+            "\nDescription: Java code for [PLACEHOLDER]"
+            "\n*/"
+            "\n\n"
+        )
 
 
 if __name__ == "__main__":
     today = date.today()
 
+    main_path = Path.home() / "Desktop"
+    filepath: Path
+
+    valid_choices = {1, 2, 3, 4}
+
     while True:
         print(
             "CHOOSE DESIRED FILE TYPE:\n"
-            "1. C\n"
-            "2. Python\n"
-            "3. LaTeX\n"
-            "4. C++\n"
-            "5. Java"
+            "1. Python\n"
+            "2. LaTeX\n"
+            "3. C++\n"
+            "4. Java"
         )
 
         while True:
@@ -105,7 +126,7 @@ if __name__ == "__main__":
             except ValueError:
                 print("Enter a valid choice.")
             else:
-                if choice not in [1, 2, 3]:
+                if choice not in valid_choices:
                     print("Enter a valid choice.")
                 else:
                     break
@@ -118,16 +139,21 @@ if __name__ == "__main__":
             else:
                 break
 
+        filepath = main_path / f"{filename}"
+
         match choice:
             case 1:
-                path = f"C:\\Users\\cavin\\Desktop\\main\\SCHOOL\\Programming 2 - CMP1025\\Codes\\C\\{filename}.c"
-                c_schoolwork(path)
+                filepath = filepath.with_suffix(".py")
+                python(filepath)
             case 2:
-                path = f"C:\\Users\\cavin\\Desktop\\main\\CODING PRACTICE\\Python\\{filename}.py"
-                python(path)
+                filepath = filepath.with_suffix(".tex")
+                latex(filepath)
             case 3:
-                path = f"C:\\Users\\cavin\\Desktop\\main\\SCHOOL\\Discrete Mathematics - MAT1008\\Discrete Mathematics Notes\\{filename}.tex"
-                latex(path)
+                filepath = filepath.with_suffix(".cpp")
+                cpp(filepath)
+            case 4:
+                filepath = filepath.with_suffix(".java")
+                java(filepath)
 
         print("\nFile has successfully been created.")
 
