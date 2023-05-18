@@ -83,7 +83,7 @@ def create_cpp_file(filepath: Path, today: date) -> None:
             f"\nDate: {today:%B %d, %Y}"
             "\nDescription: C++ code for [PLACEHOLDER]"
             "\n*/"
-            "\n\n\n"
+            "\n\n"
         )
 
 
