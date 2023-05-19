@@ -49,6 +49,8 @@ def create_python_file(
         Nothing
     """
 
+    tab_size = 4
+
     filepath = filepath.with_suffix(".py")
     filepath = file_check(filepath)
 
@@ -67,7 +69,7 @@ def create_python_file(
     )
 
     with filepath.open("w") as f:
-        f.write(boilerplate.expandtabs(4))
+        f.write(boilerplate.expandtabs(tab_size))
 
 
 def create_latex_file(filepath: Path, today: date, name: str = "") -> None:
@@ -131,6 +133,8 @@ def create_cpp_file(
         Nothing
     """
 
+    tab_size = 4
+
     filepath = filepath.with_suffix(".cpp")
     filepath = file_check(filepath)
 
@@ -149,7 +153,7 @@ def create_cpp_file(
     )
 
     with filepath.open("w") as f:
-        f.write(boilerplate.expandtabs(4))
+        f.write(boilerplate.expandtabs(tab_size))
 
 
 def create_java_file(
@@ -167,6 +171,8 @@ def create_java_file(
     Returns:
         Nothing
     """
+
+    tab_size = 4
 
     filepath = filepath.with_suffix(".java")
     filepath = file_check(filepath)
@@ -186,7 +192,7 @@ def create_java_file(
     )
 
     with filepath.open("w") as f:
-        f.write(boilerplate.expandtabs(4))
+        f.write(boilerplate.expandtabs(tab_size))
 
 
 def main() -> None:
