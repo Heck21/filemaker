@@ -17,7 +17,7 @@ It is also possible and extremely easy to extend the functionality of the script
     - LaTeX
     - C++
     - Java
-- Python, C++ and Java files have a documentation block with a name field, an ID number field, a date field, and a description field.
+- Python, C++ and Java files have a documentation block with a name field, an ID number field, a date field, and a description field as well as basic boilerplate code for each language. You can choose if the documentation block is included when the file is made.
 - LaTeX files have the boilerplate code used when I make documents.
 
 # REQUIREMENTS
@@ -43,9 +43,17 @@ python filemaker.py
 
 # CUSTOMIZATION
 
+## Name and ID Number
+
 When you run the script for the first time, you will notice that the name and ID field in whatever is generated is empty.
 
 If you want to have your name and ID number automatically added to the documentation block when generating a file, place them in the `name` and `id_num` variables in the script.
+
+## Tab Sizes
+
+The functions that create the Python, C++ and Java files have a `tab_size` parameter that is used when generating the boilerplate code. 
+
+The default is 4 but if you want to change it, just change the `tab_size` parameter's default value for each function in the script.
 
 # REGARDING WHERE FILES GET MADE
 
