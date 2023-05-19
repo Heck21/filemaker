@@ -28,8 +28,7 @@ def file_check(filepath: Path) -> Path:
                 else:
                     break
 
-            suffix = filepath.suffix
-            filepath = Path.cwd() / f"{new_name}{suffix}"
+            filepath = Path.cwd() / f"{new_name}{filepath.suffix}"
         else:
             return filepath
 
@@ -53,16 +52,22 @@ def create_python_file(
     filepath = filepath.with_suffix(".py")
     filepath = file_check(filepath)
 
+    boilerplate = (
+        "'''"
+        f"\nAuthor: {name}"
+        f"\nID#: {id_num}"
+        f"\nDate: {today:%B %d, %Y}"
+        "\nDescription: Python code for [PLACEHOLDER]"
+        "\n'''"
+        "\n\n"
+        "\ndef main() -> None:"
+        "\n\tpass"
+        '\n\n\nif __name__ == "__main__":'
+        "\n\tmain()"
+    )
+
     with filepath.open("w") as f:
-        f.write(
-            "'''"
-            f"\nAuthor: {name}"
-            f"\nID#: {id_num}"
-            f"\nDate: {today:%B %d, %Y}"
-            "\nDescription: Python code for [PLACEHOLDER]"
-            "\n'''"
-            "\n\n\n"
-        )
+        f.write(boilerplate.expandtabs(4))
 
 
 def create_latex_file(filepath: Path, today: date, name: str = "") -> None:
@@ -129,16 +134,22 @@ def create_cpp_file(
     filepath = filepath.with_suffix(".cpp")
     filepath = file_check(filepath)
 
+    boilerplate = (
+        "/*"
+        f"\nAuthor: {name}"
+        f"\nID#: {id_num}"
+        f"\nDate: {today:%B %d, %Y}"
+        "\nDescription: C++ code for [PLACEHOLDER]"
+        "\n*/"
+        "\n\n#include <iostream>"
+        "\n\nint main() {"
+        "\n\t"
+        "\n\n\treturn 0;"
+        "\n}"
+    )
+
     with filepath.open("w") as f:
-        f.write(
-            "/*"
-            f"\nAuthor: {name}"
-            f"\nID#: {id_num}"
-            f"\nDate: {today:%B %d, %Y}"
-            "\nDescription: C++ code for [PLACEHOLDER]"
-            "\n*/"
-            "\n\n"
-        )
+        f.write(boilerplate.expandtabs(4))
 
 
 def create_java_file(
@@ -160,16 +171,22 @@ def create_java_file(
     filepath = filepath.with_suffix(".java")
     filepath = file_check(filepath)
 
+    boilerplate = (
+        "/*"
+        f"\nAuthor: {name}"
+        f"\nID#: {id_num}"
+        f"\nDate: {today:%B %d, %Y}"
+        "\nDescription: Java code for [PLACEHOLDER]"
+        "\n*/"
+        f"\n\npublic class {filepath.stem} {{"
+        "\n\tpublic static void main(String[] args) {"
+        "\n\t\t"
+        "\n\t}"
+        "\n}"
+    )
+
     with filepath.open("w") as f:
-        f.write(
-            "/*"
-            f"\nAuthor: {name}"
-            f"\nID#: {id_num}"
-            f"\nDate: {today:%B %d, %Y}"
-            "\nDescription: Java code for [PLACEHOLDER]"
-            "\n*/"
-            "\n\n"
-        )
+        f.write(boilerplate.expandtabs(4))
 
 
 def main() -> None:
