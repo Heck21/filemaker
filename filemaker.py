@@ -34,47 +34,58 @@ def file_check(filepath: Path) -> Path:
 
 
 def create_python_file(
-    filepath: Path, today: date, name: str = "", id_num: str = ""
+    filepath: Path,
+    today: date,
+    name: str = "",
+    id_num: str = "",
+    *,
+    tab_size: int = 4,
+    doc_block: bool = True,
 ) -> None:
     """
-    Creates Python file with initial docstring.
+    Creates Python file with document block and boilerplate code.
 
     Parameters:
         filepath: Path to file.
         today: Date object.
-        name: Name used in docstring. Default: ""
-        id_num: ID number used in docstring. Default ""
+        name: Name used in document block. Default: ""
+        id_num: ID number used in document block. Default: ""
+        tab_size: Amount of spaces a tab expands to. Default: 4
+        doc_block: Add document block. Default: True
 
     Returns:
         Nothing
     """
 
-    tab_size = 4
-
     filepath = filepath.with_suffix(".py")
     filepath = file_check(filepath)
 
-    boilerplate = (
-        "'''"
+    document_block = (
+        '"""'
         f"\nAuthor: {name}"
         f"\nID#: {id_num}"
         f"\nDate: {today:%B %d, %Y}"
         "\nDescription: Python code for [PLACEHOLDER]"
-        "\n'''"
-        "\n\n"
-        "\ndef main() -> None:"
-        "\n\tpass"
+        '\n"""'
+        "\n\n\n"
+    )
+
+    boilerplate = (
+        "def main() -> None:"
+        "\n\tpass  # PLACEHOLDER"
         '\n\n\nif __name__ == "__main__":'
         "\n\tmain()"
     )
 
     with filepath.open("w") as f:
+        if doc_block:
+            f.write(document_block)
         f.write(boilerplate.expandtabs(tab_size))
 
 
 def create_latex_file(filepath: Path, today: date, name: str = "") -> None:
     """
-    Creates LaTeX file with initial boilerplate code.
+    Creates LaTeX file with boilerplate code.
 
     Parameters:
         filepath: Path to file.
@@ -118,73 +129,93 @@ def create_latex_file(filepath: Path, today: date, name: str = "") -> None:
 
 
 def create_cpp_file(
-    filepath: Path, today: date, name: str = "", id_num: str = ""
+    filepath: Path,
+    today: date,
+    name: str = "",
+    id_num: str = "",
+    *,
+    tab_size: int = 4,
+    doc_block: bool = True,
 ) -> None:
     """
-    Creates C++ file with initial document block.
+    Creates C++ file with document block and boilerplate code.
 
     Parameters:
         filepath: Path to file.
         today: Date object.
         name: Name used in document block. Default: ""
-        id_num: ID number used in document block. Default ""
+        id_num: ID number used in document block. Default: ""
+        tab_size: Amount of spaces a tab expands to. Default: 4
+        doc_block: Add document block. Default: True
 
     Returns:
         Nothing
     """
 
-    tab_size = 4
-
     filepath = filepath.with_suffix(".cpp")
     filepath = file_check(filepath)
 
-    boilerplate = (
+    document_block = (
         "/*"
         f"\nAuthor: {name}"
         f"\nID#: {id_num}"
         f"\nDate: {today:%B %d, %Y}"
         "\nDescription: C++ code for [PLACEHOLDER]"
-        "\n*/"
-        "\n\n#include <iostream>"
+        "\n*/\n\n"
+    )
+
+    boilerplate = (
+        "#include <iostream>"
         "\n\nint main() {"
-        "\n\t"
+        "\n\t// PLACEHOLDER"
         "\n\n\treturn 0;"
         "\n}"
     )
 
     with filepath.open("w") as f:
+        if doc_block:
+            f.write(document_block)
         f.write(boilerplate.expandtabs(tab_size))
 
 
 def create_java_file(
-    filepath: Path, today: date, name: str = "", id_num: str = ""
+    filepath: Path,
+    today: date,
+    name: str = "",
+    id_num: str = "",
+    *,
+    tab_size: int = 4,
+    doc_block: bool = True,
 ) -> None:
     """
-    Creates Java file with initial document block.
+    Creates Java file with document block and boilerplate code.
 
     Parameters:
         filepath: Path to file.
         today: Date object.
         name: Name used in document block. Default: ""
-        id_num: ID number used in document block. Default ""
+        id_num: ID number used in document block. Default: ""
+        tab_size: Amount of spaces a tab expands to. Default: 4
+        doc_block: Add document block. Default: True
 
     Returns:
         Nothing
     """
 
-    tab_size = 4
-
     filepath = filepath.with_suffix(".java")
     filepath = file_check(filepath)
 
-    boilerplate = (
+    document_block = (
         "/*"
         f"\nAuthor: {name}"
         f"\nID#: {id_num}"
         f"\nDate: {today:%B %d, %Y}"
         "\nDescription: Java code for [PLACEHOLDER]"
-        "\n*/"
-        f"\n\npublic class {filepath.stem} {{"
+        "\n*/\n\n"
+    )
+
+    boilerplate = (
+        f"public class {filepath.stem} {{"
         "\n\tpublic static void main(String[] args) {"
         "\n\t\t"
         "\n\t}"
@@ -192,6 +223,8 @@ def create_java_file(
     )
 
     with filepath.open("w") as f:
+        if doc_block:
+            f.write(document_block)
         f.write(boilerplate.expandtabs(tab_size))
 
 
@@ -201,14 +234,18 @@ def main() -> None:
     today = date.today()
     filepath: Path
 
+    """Add info here to make it show up in document block."""
     name: str = ""
     id_num: str = ""
 
     valid_choices = {1, 2, 3, 4}
+    valid_responses = {"Y", "N"}
 
     print(f"Current Directory: {Path.cwd()}\n", end="")
 
     while True:
+        db: bool = True
+
         print(
             "\nCHOOSE DESIRED FILE TYPE:\n"
             "1. Python\n"
@@ -229,6 +266,17 @@ def main() -> None:
                     break
 
         while True:
+            response = input("\n>>> Include document block? (Y/N): ")
+            response = response.upper()
+            if response not in valid_responses:
+                print("Enter a valid response.")
+            else:
+                break
+
+        if response == "N":
+            db = False
+
+        while True:
             filename = input("\n>>> Enter desired filename: ")
 
             if len(filename) < 1:
@@ -240,25 +288,25 @@ def main() -> None:
 
         match choice:
             case 1:
-                create_python_file(filepath, today, name, id_num)
+                create_python_file(filepath, today, name, id_num, doc_block=db)
             case 2:
                 create_latex_file(filepath, today, name)
             case 3:
-                create_cpp_file(filepath, today, name, id_num)
+                create_cpp_file(filepath, today, name, id_num, doc_block=db)
             case 4:
-                create_java_file(filepath, today, name, id_num)
+                create_java_file(filepath, today, name, id_num, doc_block=db)
 
         print("\nFile has successfully been created.")
 
         while True:
-            repeat = input("\nDo you want to make another file? (Y/N): ")
-            repeat = repeat.upper()
-            if repeat not in ["Y", "N"]:
-                print("Enter a valid choice.")
+            response = input("\n>>> Make another file? (Y/N): ")
+            response = response.upper()
+            if response not in valid_responses:
+                print("Enter a valid response.")
             else:
                 break
 
-        if repeat == "N":
+        if response == "N":
             break
 
 
