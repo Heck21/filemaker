@@ -1,6 +1,14 @@
 from datetime import date
 from pathlib import Path
+from enum import Enum, auto
 from getpass import getpass
+
+
+class FileType(Enum):
+    PYTHON = auto()
+    LATEX = auto()
+    CPP = auto()
+    JAVA = auto()
 
 
 def file_check(filepath: Path) -> Path:
@@ -28,7 +36,7 @@ def file_check(filepath: Path) -> Path:
                 else:
                     break
 
-            filepath = Path.cwd() / f"{new_name}{filepath.suffix}"
+            filepath = filepath.with_stem(new_name)
         else:
             return filepath
 
@@ -232,46 +240,44 @@ def main() -> None:
     """Main Function"""
 
     today = date.today()
+    main_path = Path.cwd()
     filepath: Path
 
     """Add info here to make it show up in document block."""
     name: str = ""
     id_num: str = ""
 
-    valid_choices = {1, 2, 3, 4}
+    valid_choices = {member.value for member in FileType}
+    response: str = ""
     valid_responses = {"Y", "N"}
 
-    print(f"Current Directory: {Path.cwd()}\n", end="")
+    print(f"Current Directory: {main_path}\n", end="")
 
     while True:
         db: bool = True
 
-        print(
-            "\nCHOOSE DESIRED FILE TYPE:\n"
-            "1. Python\n"
-            "2. LaTeX\n"
-            "3. C++\n"
-            "4. Java"
-        )
+        print("\nCHOOSE DESIRED FILE TYPE:")
+        for language in FileType:
+            print(f"{language.value}.\t{language.name}")
 
         while True:
             try:
                 choice = int(input(">>> "))
+                if choice not in valid_choices:
+                    raise ValueError
             except ValueError:
                 print("Enter a valid choice.")
             else:
-                if choice not in valid_choices:
-                    print("Enter a valid choice.")
+                break
+
+        if choice != FileType.LATEX.value:
+            while True:
+                response = input("\n>>> Include document block? (Y/N): ")
+                response = response.upper()
+                if response not in valid_responses:
+                    print("Enter a valid response.")
                 else:
                     break
-
-        while True:
-            response = input("\n>>> Include document block? (Y/N): ")
-            response = response.upper()
-            if response not in valid_responses:
-                print("Enter a valid response.")
-            else:
-                break
 
         if response == "N":
             db = False
@@ -284,16 +290,16 @@ def main() -> None:
             else:
                 break
 
-        filepath = Path.cwd() / f"{filename}"
+        filepath = main_path / f"{filename}"
 
         match choice:
-            case 1:
+            case FileType.PYTHON.value:
                 create_python_file(filepath, today, name, id_num, doc_block=db)
-            case 2:
+            case FileType.LATEX.value:
                 create_latex_file(filepath, today, name)
-            case 3:
+            case FileType.CPP.value:
                 create_cpp_file(filepath, today, name, id_num, doc_block=db)
-            case 4:
+            case FileType.JAVA.value:
                 create_java_file(filepath, today, name, id_num, doc_block=db)
 
         print("\nFile has successfully been created.")
