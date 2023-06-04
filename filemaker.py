@@ -2,6 +2,7 @@ from datetime import date
 from pathlib import Path
 from enum import Enum, auto
 from getpass import getpass
+import sys
 
 
 class FileType(Enum):
@@ -321,6 +322,6 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        exit(code="\nExiting...")
+        sys.exit("\nExiting...")
     else:
         getpass("\nPress ENTER to exit...")
