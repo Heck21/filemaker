@@ -175,7 +175,7 @@ def create_cpp_file(
 
     boilerplate = (
         "#include <iostream>"
-        "\n\nint main()"
+        "\n\nint main(void)"
         "\n{"
         "\n\t// PLACEHOLDER"
         "\n\n\treturn 0;"
