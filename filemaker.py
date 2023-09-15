@@ -9,7 +9,8 @@ class FileType(Enum):
     PYTHON = auto()
     LATEX = auto()
     CPP = auto()
-    JAVA = auto()
+    CPP_HEADER = auto()
+    CPP_PROJECT = auto()
 
 
 def file_check(filepath: Path) -> Path:
@@ -175,6 +176,8 @@ def create_cpp_file(
 
     boilerplate = (
         "#include <iostream>"
+        "\n#include <string>"
+        "\n\nusing std::string;"
         "\n\nint main(void)"
         "\n{"
         "\n\t// PLACEHOLDER"
@@ -188,7 +191,7 @@ def create_cpp_file(
         f.write(boilerplate.expandtabs(tab_size))
 
 
-def create_java_file(
+def create_cpp_header(
     filepath: Path,
     today: date,
     name: str = "",
@@ -198,7 +201,7 @@ def create_java_file(
     doc_block: bool = True,
 ) -> None:
     """
-    Creates Java file with document block and boilerplate code.
+    Creates C++ header file with document block and boilerplate code.
 
     Parameters:
         filepath: Path to file.
@@ -212,7 +215,7 @@ def create_java_file(
         Nothing
     """
 
-    filepath = filepath.with_suffix(".java")
+    filepath = filepath.with_suffix(".h")
     filepath = file_check(filepath)
 
     document_block = (
@@ -220,22 +223,57 @@ def create_java_file(
         f"\nAuthor: {name}"
         f"\nID#: {id_num}"
         f"\nDate: {today:%B %d, %Y}"
-        "\nDescription: Java code for [PLACEHOLDER]"
+        f"\n{filepath.stem}.h"
         "\n*/\n\n"
     )
 
     boilerplate = (
-        f"public class {filepath.stem} {{"
-        "\n\tpublic static void main(String[] args) {"
-        "\n\t\t"
-        "\n\t}"
-        "\n}"
+        "#pragma once"
+        "\n\n#include <iostream>"
+        "\n#include <string>"
+        "\n\nusing std::string;"
     )
 
     with filepath.open("w") as f:
         if doc_block:
             f.write(document_block)
         f.write(boilerplate.expandtabs(tab_size))
+
+
+def create_cpp_project(filepath: Path) -> None:
+    """
+    Creates C++ file with document block and boilerplate code.
+
+    Parameters:
+        filepath: Path to folder.
+
+    Returns:
+        Nothing
+    """
+
+    while True:
+        if filepath.exists():
+            print(f"\n{filepath} already exists.")
+        else:
+            break
+
+        while True:
+            new_name = input(">>> Enter a new folder name: ")
+
+            if len(new_name) < 1:
+                print("Folder name should not be blank.")
+            else:
+                break
+
+        filepath = filepath.with_stem(new_name)
+
+    filepath.mkdir()
+
+    header = filepath / "include"
+    header.mkdir()
+
+    source = filepath / "src"
+    source.mkdir()
 
 
 def main() -> None:
@@ -301,10 +339,15 @@ def main() -> None:
                 create_latex_file(filepath, today, name)
             case FileType.CPP.value:
                 create_cpp_file(filepath, today, name, id_num, doc_block=db)
-            case FileType.JAVA.value:
-                create_java_file(filepath, today, name, id_num, doc_block=db)
+            case FileType.CPP_HEADER.value:
+                create_cpp_header(filepath, today, name, id_num, doc_block=db)
+            case FileType.CPP_PROJECT.value:
+                create_cpp_project(filepath)
 
-        print("\nFile has successfully been created.")
+        if choice == FileType.CPP_PROJECT.value:
+            print("\nFolder has successfully been created.")
+        else:
+            print("\nFile has successfully been created.")
 
         while True:
             response = input("\n>>> Make another file? (Y/N): ")
